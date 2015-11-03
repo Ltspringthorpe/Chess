@@ -11,7 +11,7 @@ class Piece
   end
 
   def to_s
-    " #{self.class.to_s[0]} "
+    self.class == Knight ? " N " : " #{self.class.to_s[0]} "
   end
 
   def move_into_check?(end_pos)
@@ -33,7 +33,7 @@ class Piece
   end
 
   def deep_dup(board = @board, position = @position, color = @color)
-    self.class.new(@board, @position, @color)
+    self.class.new(board, position, color)
   end
 
 end
@@ -105,6 +105,7 @@ class SteppingPiece < Piece
 
   def moves
     possible_moves = []
+    self.update_move_dirs if self.class == Pawn
     directions = self.move_dirs
     directions.each do |direction|
       possible_moves.concat(check_direction(@position, direction))
@@ -144,6 +145,25 @@ end
 class Pawn < SteppingPiece
   def initialize(board, position, color)
     super
-    @color == "white" ? @move_dirs = [[1,0], [2,0]] : @move_dirs = [[-1,0], [-2,0]]
+    update_move_dirs
+  end
+
+  def update_move_dirs
+      if @color == "white"
+      @move_dirs = [[1,0]]
+      @move_dirs << [2,0] if self.position[0] == 1
+      diagonal_piece = @board[[position[0]+1, position[1]+1]]
+      @move_dirs << [1,1] unless diagonal_piece.nil? || diagonal_piece.color == "white"
+      diagonal_piece = @board[[position[0]+1, position[1]-1]]
+      @move_dirs << [1,-1] unless diagonal_piece.nil? || diagonal_piece.color == "white"
+    else
+      @move_dirs = [[-1,0]]
+      @move_dirs << [-2,0] if self.position[0] == 6
+      diagonal_piece = @board[[position[0]-1, position[1]+1]]
+      @move_dirs << [-1,1] unless diagonal_piece.nil? || diagonal_piece.color == "black"
+      diagonal_piece = @board[[position[0]-1, position[1]-1]]
+      @move_dirs << [-1,-1] unless diagonal_piece.nil? || diagonal_piece.color == "black"
+    end
+    @move_dirs
   end
 end

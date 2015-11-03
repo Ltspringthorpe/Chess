@@ -21,14 +21,14 @@ class Board
     @board[0][5] = Bishop.new(self, [0,5], color)
     @board[0][6] = Knight.new(self, [0,6], color)
     @board[0][7] = Rook.new(self, [0,7], color)
-    @board[1][0] = Rook.new(self, [1,0], color)
-    @board[1][1] = Rook.new(self, [1,1], color)
-    @board[1][2] = Rook.new(self, [1,2], color)
-    @board[1][3] = Queen.new(self, [1,3], color)
-    @board[1][4] = King.new(self, [1,4], color)
-    @board[1][5] = Rook.new(self, [1,5], color)
-    @board[1][6] = Bishop.new(self, [1,6], color)
-    @board[1][7] = Knight.new(self, [1,7], color)
+    @board[1][0] = Pawn.new(self, [1,0], color)
+    @board[1][1] = Pawn.new(self, [1,1], color)
+    @board[1][2] = Pawn.new(self, [1,2], color)
+    @board[1][3] = Pawn.new(self, [1,3], color)
+    @board[1][4] = Pawn.new(self, [1,4], color)
+    @board[1][5] = Pawn.new(self, [1,5], color)
+    @board[1][6] = Pawn.new(self, [1,6], color)
+    @board[1][7] = Pawn.new(self, [1,7], color)
 
     @board[0..1].each do |row|
       row.each do |piece|
@@ -41,12 +41,12 @@ class Board
     @board[7][1] = Knight.new(self, [7,1], color)
     @board[7][2] = Bishop.new(self, [7,2], color)
     @board[7][3] = Queen.new(self, [7,3], color)
-    @board[7][4] = Pawn.new(self, [7,4], color)
+    @board[7][4] = King.new(self, [7,4], color)
     @board[7][5] = Bishop.new(self, [7,5], color)
     @board[7][6] = Knight.new(self, [7,6], color)
     @board[7][7] = Rook.new(self, [7,7], color)
     @board[6][0] = Pawn.new(self, [6,0], color)
-    @board[6][1] = King.new(self, [6,1], color)
+    @board[6][1] = Pawn.new(self, [6,1], color)
     @board[6][2] = Pawn.new(self, [6,2], color)
     @board[6][3] = Pawn.new(self, [6,3], color)
     @board[6][4] = Pawn.new(self, [6,4], color)
@@ -110,6 +110,7 @@ class Board
       possible_moves.concat(piece.valid_moves?)
       return false unless possible_moves.empty?
     end
+    puts "End Game"
     true
   end
 

@@ -19,7 +19,7 @@ class Display
 
   def build_row(row, i)
     row.map.with_index do |piece, j|
-      color_options = colors_for(i, j)
+      color_options = colors_for(@board, i, j)
       if piece.nil?
         "   ".colorize(color_options)
       else
@@ -50,9 +50,11 @@ class Display
   #   false
   # end
 
-  def render
-    #system("clear")
+  def render(color)
+    color = color[0].upcase + color[1..-1]
+    system("clear")
     puts "Arrow keys, WASD, or vim to move, space or enter to confirm."
+    puts "\n#{color}'s turn: "
     build_grid.each { |row| puts row.join }
   end
 end
