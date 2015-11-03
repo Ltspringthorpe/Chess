@@ -11,13 +11,13 @@ class Board
     #white pieces
     @board[0..1].each_with_index do |row, row_idx|
       row.each_index do |square_idx|
-        @board[row_idx][square_idx] = Piece.new([row_idx,square_idx])
+        @board[row_idx][square_idx] = Bishop.new(self, [row_idx,square_idx], "white")
       end
     end
     #black pieces
     @board[6..7].each_with_index do |row, row_idx|
       row.each_index do |square_idx|
-        @board[row_idx + 6][square_idx] = Piece.new([row_idx + 6,square_idx])
+        @board[row_idx + 6][square_idx] = Bishop.new(self, [row_idx + 6,square_idx], "black")
       end
     end
   end

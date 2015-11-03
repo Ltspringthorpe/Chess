@@ -57,8 +57,10 @@ if $PROGRAM_NAME == __FILE__
   board = Board.new
   display = Display.new(board)
   result = nil
+  p board[[0,0]].moves
   until result
     display.render
     result = display.get_input
   end
+
 end
