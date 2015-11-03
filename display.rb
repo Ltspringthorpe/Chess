@@ -1,7 +1,7 @@
 require "colorize"
 require_relative "cursorable"
 require_relative "board"
-#require 'byebug'
+require 'byebug'
 
 class Display
   include Cursorable
@@ -28,15 +28,20 @@ class Display
     end
   end
 
-  def colors_for(i, j)
+  def colors_for(board,i, j)
+    if !board[[i,j]].nil?
+      piece = board[[i,j]]
+      text_color = piece.color
+      text_color == "black" ? text_color = :black : text_color = :light_white
+    end
     if [i, j] == @cursor_pos
       bg = :light_red
     elsif (i + j).odd?
-      bg = :light_blue
+      bg = :white
     else
-      bg = :blue
+      bg = :light_black
     end
-    { background: bg, color: :white }
+    { background: bg, color: text_color }
   end
 
   # def selected?
@@ -46,7 +51,7 @@ class Display
   # end
 
   def render
-    system("clear")
+    #system("clear")
     puts "Arrow keys, WASD, or vim to move, space or enter to confirm."
     build_grid.each { |row| puts row.join }
   end
@@ -57,7 +62,10 @@ if $PROGRAM_NAME == __FILE__
   board = Board.new
   display = Display.new(board)
   result = nil
-  p board[[0,0]].moves
+  p board[[1,0]].moves
+  #p board[[6,1]].methods
+  #p board[[6,1]].move_into_check?([5,0])
+  p board.check_mate?("black")
   until result
     display.render
     result = display.get_input

@@ -14,6 +14,28 @@ class Piece
     " #{self.class.to_s[0]} "
   end
 
+  def move_into_check?(end_pos)
+    return false unless self.moves.include?(end_pos)
+    board_duplicate = @board.deep_dup
+    board_duplicate.move(@position, end_pos)
+    board_duplicate.in_check?(@color)
+  end
+
+  def valid_moves?
+    valid_moves = []
+
+    possible_moves = self.moves
+    possible_moves.each do |move|
+      valid_moves << move unless move_into_check?(move)
+    end
+
+    valid_moves
+  end
+
+  def deep_dup(board = @board, position = @position, color = @color)
+    self.class.new(@board, @position, @color)
+  end
+
 end
 
 class SlidingPiece < Piece
@@ -119,6 +141,9 @@ class King < SteppingPiece
   end
 end
 
-class Pawn
-  #panic
+class Pawn < SteppingPiece
+  def initialize(board, position, color)
+    super
+    @color == "white" ? @move_dirs = [[1,0], [2,0]] : @move_dirs = [[-1,0], [-2,0]]
+  end
 end
