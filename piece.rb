@@ -10,10 +10,6 @@ class Piece
     @color = color
   end
 
-  def to_s
-    self.class == Knight ? " N " : " #{self.class.to_s[0]} "
-  end
-
   def move_into_check?(end_pos)
     return false unless self.moves.include?(end_pos)
     board_duplicate = @board.deep_dup
@@ -74,10 +70,12 @@ class SlidingPiece < Piece
 end
 
 class Rook < SlidingPiece
-
   def initialize(board, position, color)
     super
     @move_dirs = HORIZONTAL_VERTICAL
+  end
+  def to_s
+    " ♜ "
   end
 end
 
@@ -86,12 +84,18 @@ class Bishop < SlidingPiece
     super
     @move_dirs = DIAGONAL
   end
+  def to_s
+    " \u265D "
+  end
 end
 
 class Queen < SlidingPiece
   def initialize(board, position, color)
     super
     @move_dirs = HORIZONTAL_VERTICAL + DIAGONAL
+  end
+  def to_s
+    " ♛ "
   end
 end
 
@@ -133,6 +137,9 @@ class Knight < SteppingPiece
     super
       @move_dirs = KNIGHT
   end
+  def to_s
+    " ♞ "
+  end
 end
 
 class King < SteppingPiece
@@ -140,12 +147,18 @@ class King < SteppingPiece
     super
     @move_dirs = HORIZONTAL_VERTICAL + DIAGONAL
   end
+  def to_s
+    " ♚ "
+  end
 end
 
 class Pawn < SteppingPiece
   def initialize(board, position, color)
     super
     update_move_dirs
+  end
+  def to_s
+    " ♟ "
   end
 
   def update_move_dirs

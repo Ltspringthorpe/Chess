@@ -8,13 +8,23 @@ class Player
     @display ||= Display.new(board)
   end
 
-  def move
+  def move(selected_piece = nil)
     result = nil
     until result
-      @display.render(@color)
+      @display.render(@color, selected_piece)
       result = @display.get_input
     end
+    puts "ended move"
     result
   end
+
+  # def move_second(selected_piece)
+  #   result = nil
+  #   until result
+  #     @display.render(@color)
+  #     result = @display.get_input
+  #   end
+  #   result
+  # end
 
 end

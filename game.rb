@@ -17,8 +17,10 @@ class Game
 
   def play
     until @board.check_mate?(@current_player.color)
+      #debugger
       start_pos = select_start
-      end_pos = select_end(@board[start_pos])
+      @selected_piece = @board[start_pos]
+      end_pos = select_end(@selected_piece)
       @board.move(start_pos, end_pos)
       new_turn
     end
@@ -48,7 +50,8 @@ class Game
 
   def select_end(start_piece)
     begin
-      end_pos = @current_player.move
+      puts "here #{@selected_piece.class}"
+      end_pos = @current_player.move(@selected_piece)
       fail ArgumentError.new unless start_piece.moves.include?(end_pos)
     rescue ArgumentError
       puts "That piece can't move there"

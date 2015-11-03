@@ -29,30 +29,58 @@ class Display
   end
 
   def colors_for(board,i, j)
-    if !board[[i,j]].nil?
-      piece = board[[i,j]]
-      text_color = piece.color
-      text_color == "black" ? text_color = :black : text_color = :light_white
-    end
-    if [i, j] == @cursor_pos
-      bg = :light_red
-    elsif (i + j).odd?
-      bg = :white
+    if @selected_piece.nil?
+      if !board[[i,j]].nil?
+        piece = board[[i,j]]
+        text_color = piece.color
+        text_color == "black" ? text_color = :black : text_color = :light_white
+      end
+      cursor_piece = board[@cursor_pos]
+      if [i, j] == @cursor_pos
+        bg = :light_red
+      elsif (i + j).odd?
+        if !cursor_piece.nil? && cursor_piece.moves.include?([i, j])
+          bg = :light_yellow
+        else
+         bg = :white
+        end
+      else
+        if !cursor_piece.nil? && cursor_piece.moves.include?([i, j])
+          bg = :yellow
+        else
+         bg = :light_black
+        end
+      end
     else
-      bg = :light_black
+      if !board[[i,j]].nil?
+        piece = board[[i,j]]
+        text_color = piece.color
+        text_color == "black" ? text_color = :black : text_color = :light_white
+      end
+      cursor_piece = board[@cursor_pos]
+      if [i, j] == @cursor_pos
+        bg = :light_red
+      elsif (i + j).odd?
+        if @selected_piece.moves.include?([i, j])
+          bg = :light_yellow
+        else
+         bg = :white
+        end
+      else
+        if @selected_piece.moves.include?([i, j])
+          bg = :yellow
+        else
+         bg = :light_black
+        end
+      end
     end
     { background: bg, color: text_color }
   end
 
-  # def selected?
-  #
-  #   return true unless @board[position].nil?
-  #   false
-  # end
-
-  def render(color)
-    color = color[0].upcase + color[1..-1]
-    system("clear")
+  def render(color, selected_piece)
+    @selected_piece = selected_piece
+    color = color.capitalize
+    #system("clear")
     puts "Arrow keys, WASD, or vim to move, space or enter to confirm."
     puts "\n#{color}'s turn: "
     build_grid.each { |row| puts row.join }
