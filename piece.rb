@@ -17,7 +17,7 @@ class Piece
     board_duplicate.in_check?(@color)
   end
 
-  def valid_moves?
+  def valid_moves
     valid_moves = []
 
     possible_moves = self.moves
@@ -35,10 +35,6 @@ class Piece
 end
 
 class SlidingPiece < Piece
-
-  def initialize(board, position, color)
-    super
-  end
 
   def moves
     possible_moves = []
@@ -70,7 +66,7 @@ class SlidingPiece < Piece
 end
 
 class Rook < SlidingPiece
-  def initialize(board, position, color)
+  def initialize(*_args)
     super
     @move_dirs = HORIZONTAL_VERTICAL
   end
@@ -80,7 +76,7 @@ class Rook < SlidingPiece
 end
 
 class Bishop < SlidingPiece
-  def initialize(board, position, color)
+  def initialize(*_args)
     super
     @move_dirs = DIAGONAL
   end
@@ -90,7 +86,7 @@ class Bishop < SlidingPiece
 end
 
 class Queen < SlidingPiece
-  def initialize(board, position, color)
+  def initialize(*_args)
     super
     @move_dirs = HORIZONTAL_VERTICAL + DIAGONAL
   end
@@ -102,10 +98,6 @@ end
 class SteppingPiece < Piece
 
   KNIGHT = [[2,1], [1,2], [-1,2], [-1,-2], [-2,1], [-2,-1], [2,-1],[1,-2]]
-
-  def initialize(board, position, color)
-    super
-  end
 
   def moves
     possible_moves = []
@@ -133,7 +125,7 @@ class SteppingPiece < Piece
 end
 
 class Knight < SteppingPiece
-  def initialize(board, position, color)
+  def initialize(*_args)
     super
       @move_dirs = KNIGHT
   end
@@ -143,7 +135,7 @@ class Knight < SteppingPiece
 end
 
 class King < SteppingPiece
-  def initialize(board, position, color)
+  def initialize(*_args)
     super
     @move_dirs = HORIZONTAL_VERTICAL + DIAGONAL
   end
@@ -153,7 +145,7 @@ class King < SteppingPiece
 end
 
 class Pawn < SteppingPiece
-  def initialize(board, position, color)
+    def initialize(*_args)
     super
     update_move_dirs
   end
@@ -163,15 +155,19 @@ class Pawn < SteppingPiece
 
   def update_move_dirs
       if @color == "white"
-      @move_dirs = [[1,0]]
-      @move_dirs << [2,0] if self.position[0] == 1
+      @move_dirs = []
+      forward_pieces = [@board[[position[0]+1, position[1]]], @board[[position[0]+2,position[1]]]]
+      @move_dirs << [1,0] if forward_pieces[0].nil?
+      @move_dirs << [2,0] if self.position[0] == 1 && forward_pieces[1].nil?
       diagonal_piece = @board[[position[0]+1, position[1]+1]]
       @move_dirs << [1,1] unless diagonal_piece.nil? || diagonal_piece.color == "white"
       diagonal_piece = @board[[position[0]+1, position[1]-1]]
       @move_dirs << [1,-1] unless diagonal_piece.nil? || diagonal_piece.color == "white"
     else
-      @move_dirs = [[-1,0]]
-      @move_dirs << [-2,0] if self.position[0] == 6
+      @move_dirs = []
+      forward_pieces = [@board[[position[0]-1, position[1]]], @board[[position[0]-2,position[1]]]]
+      @move_dirs << [-1,0] if forward_pieces[0].nil?
+      @move_dirs << [-2,0] if self.position[0] == 6 && forward_pieces[1].nil?
       diagonal_piece = @board[[position[0]-1, position[1]+1]]
       @move_dirs << [-1,1] unless diagonal_piece.nil? || diagonal_piece.color == "black"
       diagonal_piece = @board[[position[0]-1, position[1]-1]]

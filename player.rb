@@ -3,9 +3,9 @@ require_relative "display"
 class Player
   attr_accessor :display, :color
 
-  def initialize(board, color)
+  def initialize(game, color)
     @color = color
-    @display ||= Display.new(board)
+    @display ||= Display.new(game)
   end
 
   def move(selected_piece = nil)
@@ -14,7 +14,6 @@ class Player
       @display.render(@color, selected_piece)
       result = @display.get_input
     end
-    puts "ended move"
     result
   end
 

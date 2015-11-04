@@ -61,7 +61,7 @@ class Board
     end
 
     @white_king = @board[0][4]
-    @black_king = @board[6][0]
+    @black_king = @board[7][4]
   end
 
   def [](pos)
@@ -77,11 +77,8 @@ class Board
   end
 
   def move(start_pos, end_pos)
-    fail "outside of board" unless in_bounds?(end_pos)
     fail "no piece at start" if self[start_pos].nil?
     piece = self[start_pos]
-    fail "piece can't move like that" unless piece.moves.include?(end_pos)
-
     piece.position = end_pos
     self[start_pos] = nil
     self[end_pos] = piece
@@ -107,7 +104,7 @@ class Board
     possible_moves = []
     color == "white" ? current_color = @white_pieces : current_color = @black_pieces
     current_color.each do |piece|
-      possible_moves.concat(piece.valid_moves?)
+      possible_moves.concat(piece.valid_moves)
       return false unless possible_moves.empty?
     end
     puts "End Game"

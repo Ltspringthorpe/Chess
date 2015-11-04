@@ -45,6 +45,8 @@ module Cursorable
     when :left, :right, :up, :down
       update_pos(MOVES[key])
       nil
+    when :backspace || :delete
+      "reset_piece"
     else
       puts key
     end
@@ -70,4 +72,5 @@ module Cursorable
     new_pos = [@cursor_pos[0] + diff[0], @cursor_pos[1] + diff[1]]
     @cursor_pos = new_pos if @board.in_bounds?(new_pos)
   end
+
 end
