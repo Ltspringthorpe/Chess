@@ -107,7 +107,9 @@ class Board
       possible_moves.concat(piece.valid_moves)
       return false unless possible_moves.empty?
     end
-    puts "End Game"
+    loser = color
+    loser == "white" ? winner = "black" : winner = "white"
+    puts "Game over!\n#{winner.capitalize} wins"
     true
   end
 

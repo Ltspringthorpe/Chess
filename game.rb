@@ -18,11 +18,8 @@ class Game
   def play
     until @board.check_mate?(@current_player.color)
       begin
-        puts @board.class
-        puts @board.in_check?("black")
         if @board.in_check?(@current_player.color)
-          #system("clear")
-          puts "You're in check!"
+          puts "#{current_player.color.capitalize} is in check!"
           sleep 1
         end
         start_pos = select_start

@@ -55,10 +55,14 @@ class Display
     else
       if !board[[i,j]].nil?
         piece = board[[i,j]]
-        text_color = piece.color
-        text_color == "black" ? text_color = :black : text_color = :light_white
+        if piece == @selected_piece
+          text_color = :blue
+        else
+          text_color = piece.color
+          text_color == "black" ? text_color = :black : text_color = :light_white
+        end
       end
-      #cursor_piece = board[@cursor_pos]
+
       if [i, j] == @cursor_pos
         bg = :light_red
       elsif (i + j).odd?
@@ -84,7 +88,7 @@ class Display
     @current_color = @game.current_player.color
     color = color.capitalize
     system("clear")
-    puts "Arrow keys or WASD move\nspace or enter to confirm\nbackspace or delete to reset your player selection."
+    puts "Arrow keys or WASD move\nSpace or Enter to confirm\nBackspace to reset your piece selection."
     puts "\n#{color}'s turn: "
     @cursor_valid_moves = @cursor_piece.valid_moves unless @cursor_piece.nil?
     @selected_valid_moves = @selected_piece.valid_moves unless @selected_piece.nil?
