@@ -3,4 +3,4 @@
 
 Run game.rb with Ruby.
 
-![Ruby Chess demo](demo_video.ogv)
+![Ruby Chess demo](/demo_video.gif)
